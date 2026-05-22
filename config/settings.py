@@ -162,5 +162,11 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": os.getenv("GOOGLE_CLIENT_SECRET"),
             "key": ""
         }
+    },
+    "facebook": {
+        "APP": {
+            "client_id": os.getenv("FACEBOOK_CLIENT_ID"),
+            "secret": os.getenv("FACEBOOK_CLIENT_SECRET"),
+        }
     }
 }
