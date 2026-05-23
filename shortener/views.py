@@ -5,6 +5,8 @@ from .utils import create_unique_code
 
 
 def create_short_url(request):
+    if not request.user.is_authenticated:
+        return redirect("home")
 
     if request.method == "POST":
 
