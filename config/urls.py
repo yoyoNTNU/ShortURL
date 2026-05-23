@@ -18,9 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from shortener.views import home
+from shortener import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home),
     path('accounts/', include('allauth.urls')),
+    path("r/<str:code>/", views.redirect_short_url),
+    path("create/", views.create_short_url)
 ]
