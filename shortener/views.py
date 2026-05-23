@@ -3,15 +3,12 @@ from django.http import HttpResponse
 from .models import ShortURL, ClickLog
 from .utils import create_unique_code
 
-def home(request):
-    print(request.user)
-    print(request.user.is_authenticated)
-    return HttpResponse(f"Hello, {request.user.username}!")
 
 def create_short_url(request):
-    if request.method == "POST":
-        url = request.POST.get("url")
 
+    if request.method == "POST":
+
+        url = request.POST.get("url")
         code = create_unique_code()
 
         obj = ShortURL.objects.create(
@@ -20,11 +17,16 @@ def create_short_url(request):
             short_code=code
         )
 
-        return render(request, "shortener/result.html", {
-            "short_url": f"/r/{obj.short_code}"
-        })
+        full_url = request.build_absolute_uri(f"/r/{obj.short_code}/")
+        request.session["short_url"] = full_url
+        return redirect("create_short_url")
 
-    return render(request, "shortener/create.html")
+    short_url = request.session.pop("short_url", None)
+
+    return render(request, "shortener/create.html", {
+        "short_url": short_url
+    })
+
 
 def redirect_short_url(request, code):
     try:

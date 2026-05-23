@@ -1,5 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Create Short URL</h1>
+
 <form method="POST">
-  {% csrf_token %}
-  <input name="url" placeholder="Enter URL">
-  <button type="submit">Create</button>
+
+    {% csrf_token %}
+
+    <input
+        type="text"
+        name="url"
+        placeholder="Enter URL"
+        style="width: 400px;"
+        required
+    >
+
+    <button type="submit">
+        Create
+    </button>
+
 </form>
+
+{% if short_url %}
+
+    <p>Your Short URL:</p>
+
+    <input
+        type="text"
+        value="{{ short_url }}"
+        id="shortUrl"
+        style="width: 400px;"
+        readonly
+    >
+
+    <button id="copyButton" onclick="copyUrl()">
+        Copy
+    </button>
+
+{% endif %}
+
+<script>
+
+function copyUrl() {
+
+    const copyText = document.getElementById("shortUrl");
+
+    navigator.clipboard.writeText(copyText.value);
+
+    const btn = document.getElementById("copyButton");
+
+    btn.innerText = "Copy Successful!";
+
+    setTimeout(() => {
+        btn.innerText = "Copy";
+    }, 1500);
+
+}
+
+</script>
+
+{% endblock %}
