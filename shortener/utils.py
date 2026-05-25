@@ -1,7 +1,7 @@
 import string
 import random
 from .models import ShortURL
-from django.shortcuts import redirect
+from django.http import HttpResponse
 
 def generate_code(length=6):
     chars = string.ascii_letters + string.digits
@@ -15,5 +15,10 @@ def create_unique_code():
 
 def denied_unauthorized(request):
     if not request.user.is_authenticated:
-        return redirect("home")
+        return HttpResponse("Unauthorized", status=401)
+    return None
+
+def denied_forbidden(request, auth_user):
+    if request.user != auth_user:
+        return HttpResponse("Forbidden", status=403)
     return None
