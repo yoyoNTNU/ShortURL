@@ -6,4 +6,5 @@ urlpatterns = [
     path("r/<str:code>/", views.redirect_short_url),
 
     path("analytics/", views.total_analytics),
+    path("analytics/<str:code>/", views.url_analytics),
 ]

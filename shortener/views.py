@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Count
 from .models import ShortURL, ClickLog
-from .utils import create_unique_code, denied_unauthorized
+from .utils import create_unique_code, denied_unauthorized, denied_forbidden
 
 def create_short_url(request):
     res = denied_unauthorized(request)
@@ -54,4 +54,19 @@ def total_analytics(request):
     urls = ShortURL.objects.filter(user=request.user).order_by("-created_at").annotate(click_count=Count("clicklog"))
     return render(request, "shortener/analytics.html", {
         "urls": urls
+    })
+
+def url_analytics(request, code):
+    res = denied_unauthorized(request)
+    if res:
+        return res
+    short_url = ShortURL.objects.get(short_code=code)
+    res = denied_forbidden(request, short_url.user)
+    if res:
+        return res
+    clicks = ClickLog.objects.filter(short_url=short_url).order_by("-clicked_at")
+    return render(request, "shortener/analytics_detail.html", {
+        "short_url": short_url,
+        "click_count": clicks.count(),
+        "clicks": clicks
     })

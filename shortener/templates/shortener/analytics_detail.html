@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .url-text {
+        color: black;
+        margin-right: 10px;
+        text-decoration: underline;
+    }
+
+    .center-cell {
+        text-align: center;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+</style>
+
+<div class="header">
+    <h1>Short URL Analytics</h1>
+    <a class="url-text" href="/analytics/">
+        Back to List
+    </a>
+</div>
+<h3>Original URL: {{ short_url.original_url }}</h3>
+<h3>Short Code: {{ short_url.short_code }}</h3>
+<h3>Total Clicks: {{ clicks|length }}</h3>
+
+
+{% if clicks %}
+
+    <table style="width: 100%;" border="1" cellpadding="10">
+
+        <tr>
+            <th>Clicked at</th>
+            <th>User IP</th>
+            <th>User Agent</th>
+        </tr>
+
+        {% for click in clicks %}
+
+        <tr>
+
+            <td>
+                {{ click.clicked_at }}
+            </td>
+
+            <td>
+                {{ click.ip_address }}
+            </td>
+            <td>
+                {{ click.user_agent }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% else %}
+    <p>No Clicks Data...</p>
+
+{% endif %}
+
+
+<script>
+
+function copyUrl(btn ,url) {
+    navigator.clipboard.writeText(url);
+    btn.innerText = "OK!";
+    setTimeout(() => {
+        btn.innerText = "Copy";
+    }, 1000);
+}
+
+</script>
+
+{% endblock %}

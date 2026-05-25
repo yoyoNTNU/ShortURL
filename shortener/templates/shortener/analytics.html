@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<h1>Short URL Analytics</h1>
 <style>
     .url-text {
         color: black;
@@ -21,6 +19,8 @@
     }
 </style>
 
+<h1>Short URL Analytics</h1>
+
 {% if urls %}
 
     <table style="width: 100%;" border="1" cellpadding="10">
@@ -29,6 +29,7 @@
             <th>Original URL</th>
             <th>Short URL</th>
             <th>Clicks</th>
+            <th>Created at</th>
             <th>Details</th>
         </tr>
 
@@ -55,11 +56,14 @@
             </td>
 
             <td class="center-cell">
+                {{ url.created_at }}
+            </td>
+
+            <td class="center-cell">
                 <a class="url-text" href="/analytics/{{ url.short_code }}/">
                     View
                 </a>
             </td>
-
         </tr>
 
         {% endfor %}
@@ -68,7 +72,7 @@
 
 {% else %}
 
-    <p>No URLs yet.</p>
+    <p>No URLs Data...</p>
 
 {% endif %}
 
