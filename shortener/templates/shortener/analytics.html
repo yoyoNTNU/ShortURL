@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Short URL Analytics</h1>
+<style>
+    .url-text {
+        color: black;
+        margin-right: 10px;
+        text-decoration: underline;
+    }
+
+    .url-cell {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .center-cell {
+        text-align: center;
+    }
+</style>
+
+{% if urls %}
+
+    <table style="width: 100%;" border="1" cellpadding="10">
+
+        <tr>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+            <th>Details</th>
+        </tr>
+
+        {% for url in urls %}
+
+        <tr>
+
+            <td>
+                {{ url.original_url }}
+            </td>
+
+            <td class="url-cell">
+                <a class="url-text" href="/r/{{ url.short_code }}/" target="_blank">
+                    {{ request.get_host }}/r/{{ url.short_code }}/
+                </a>
+                <button style="width: 80px;" onclick="copyUrl(this, '{{ request.get_host }}/r/{{ url.short_code }}/')">
+                    Copy
+                </button>
+                
+            </td>
+
+            <td class="center-cell">
+                {{ url.click_count }}
+            </td>
+
+            <td class="center-cell">
+                <a class="url-text" href="/analytics/{{ url.short_code }}/">
+                    View
+                </a>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% else %}
+
+    <p>No URLs yet.</p>
+
+{% endif %}
+
+
+<script>
+
+function copyUrl(btn ,url) {
+    navigator.clipboard.writeText(url);
+    btn.innerText = "OK!";
+    setTimeout(() => {
+        btn.innerText = "Copy";
+    }, 1000);
+}
+
+</script>
+
+{% endblock %}

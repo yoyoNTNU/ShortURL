@@ -16,7 +16,7 @@
         required
     >
 
-    <button type="submit">
+    <button style="width: 80px;" type="submit">
         Create
     </button>
 
@@ -34,7 +34,7 @@
         readonly
     >
 
-    <button id="copyButton" onclick="copyUrl()">
+    <button style="width: 80px;" id="copyButton" onclick="copyUrl()">
         Copy
     </button>
 
@@ -43,19 +43,13 @@
 <script>
 
 function copyUrl() {
-
     const copyText = document.getElementById("shortUrl");
-
     navigator.clipboard.writeText(copyText.value);
-
     const btn = document.getElementById("copyButton");
-
-    btn.innerText = "Copy Successful!";
-
+    btn.innerText = "OK!";
     setTimeout(() => {
         btn.innerText = "Copy";
-    }, 1500);
-
+    }, 1000);
 }
 
 </script>
