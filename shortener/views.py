@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.db.models import Count
 from .models import ShortURL, ClickLog
-from .utils import create_unique_code
-
+from .utils import create_unique_code, denied_unauthorized
 
 def create_short_url(request):
-    if not request.user.is_authenticated:
-        return redirect("home")
+    res = denied_unauthorized(request)
+    if res:
+        return res
 
     if request.method == "POST":
 
@@ -43,3 +44,14 @@ def redirect_short_url(request, code):
         return redirect(short_url.original_url)
     except ShortURL.DoesNotExist:
         return HttpResponse("Invalid URL", status=404)
+
+
+def total_analytics(request):
+    res = denied_unauthorized(request)
+    if res:
+        return res
+
+    urls = ShortURL.objects.filter(user=request.user).order_by("-created_at").annotate(click_count=Count("clicklog"))
+    return render(request, "shortener/analytics.html", {
+        "urls": urls
+    })
