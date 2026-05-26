@@ -29,10 +29,12 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     ".ngrok-free.dev",
+    "shorturl-qz6q.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.ngrok-free.dev",
+    "https://shorturl-qz6q.onrender.com",
 ]
 
 USE_X_FORWARDED_HOST = True
