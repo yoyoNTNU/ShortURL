@@ -10,5 +10,7 @@ class ShortURL(models.Model):
 class ClickLog(models.Model):
     short_url = models.ForeignKey(ShortURL, on_delete=models.CASCADE)
     ip_address = models.GenericIPAddressField()
-    user_agent = models.CharField(max_length=255)
+    user_browser = models.CharField(max_length=50, blank=True)
+    user_os = models.CharField(max_length=50, blank=True)
+    user_device = models.CharField(max_length=20, blank=True)
     clicked_at = models.DateTimeField(auto_now_add=True)

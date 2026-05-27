@@ -37,7 +37,9 @@
         <tr>
             <th>Clicked at</th>
             <th>User IP</th>
-            <th>User Agent</th>
+            <th>User Browser</th>
+            <th>User OS</th>
+            <th>User Device</th>
         </tr>
 
         {% for click in clicks %}
@@ -52,7 +54,13 @@
                 {{ click.ip_address }}
             </td>
             <td>
-                {{ click.user_agent }}
+                {{ click.user_browser }}
+            </td>
+            <td>
+                {{ click.user_os }}
+            </td>
+            <td>
+                {{ click.user_device }}
             </td>
 
         </tr>
@@ -65,18 +73,5 @@
     <p>No Clicks Data...</p>
 
 {% endif %}
-
-
-<script>
-
-function copyUrl(btn ,url) {
-    navigator.clipboard.writeText(url);
-    btn.innerText = "OK!";
-    setTimeout(() => {
-        btn.innerText = "Copy";
-    }, 1000);
-}
-
-</script>
 
 {% endblock %}

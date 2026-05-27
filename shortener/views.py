@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Count
+from ipware import get_client_ip
+from user_agents import parse
 from .models import ShortURL, ClickLog
 from .utils import create_unique_code, denied_unauthorized, denied_forbidden
 
@@ -34,12 +36,14 @@ def create_short_url(request):
 def redirect_short_url(request, code):
     try:
         short_url = ShortURL.objects.get(short_code=code)
-        ip = request.META.get("REMOTE_ADDR")
-        user_agent = request.META.get("HTTP_USER_AGENT", "")
+        ip = get_client_ip(request)[0] or "Unknown"
+        user_agent = parse(request.META.get("HTTP_USER_AGENT", ""))
         ClickLog.objects.create(
             short_url=short_url,
             ip_address=ip,
-            user_agent=user_agent
+            user_browser=user_agent.browser.family,
+            user_os=user_agent.os.family,
+            user_device=user_agent.device.family if not user_agent.is_pc else "PC",
         )
         return redirect(short_url.original_url)
     except ShortURL.DoesNotExist:
