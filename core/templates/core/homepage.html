@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .welcome-link {
+        color: black;
+        text-decoration: underline;
+    }
+</style>
 <h1>Welcome to ShortURL</h1>
-<h3>Login to get started!</h3>
+{% if user.is_authenticated %}
+    <h3>Let's <a href="/create/" class="welcome-link">Create</a>some short URLs! Go to <a href="/analytics/" class="welcome-link">Analytics</a>to view your short URLs and their performance.</h3>
+{% else %}
+    <h3>Login to get started!</h3>
+{% endif %}
 {% endblock %}
