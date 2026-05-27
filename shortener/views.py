@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Count
 from ipware import get_client_ip
@@ -64,7 +64,7 @@ def url_analytics(request, code):
     res = denied_unauthorized(request)
     if res:
         return res
-    short_url = ShortURL.objects.get(short_code=code)
+    short_url = get_object_or_404(ShortURL, short_code=code)
     res = denied_forbidden(request, short_url.user)
     if res:
         return res
